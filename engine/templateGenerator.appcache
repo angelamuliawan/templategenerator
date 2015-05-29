@@ -1,0 +1,12 @@
+CACHE MANIFEST
+#scripts and styles
+js/jquery.js
+js/engine.js
+
+FALLBACK:
+
+/ offline.html
+
+NETWORK:
+
+*
