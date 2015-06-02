@@ -2,13 +2,92 @@
 <html>
 	<head manifest="templateGenerator.appcache">
 		<meta charset="utf-8">
+		<style>
+			div{
+				border:1px solid black;
+				float:left;
+			}
+			#toolbar{
+				width:100%;
+				text-align:center;
+			}
+			#workspace{
+				width:100%;
+			}
+			#listWidget{
+				width:20%;
+				height:500px;
+				margin-right:1%;
+			}
+			#editSection{
+				width:50%;
+				height:500px;
+				margin-right:1%;
+			}
+			#propertiesSection{
+				width:20%;
+				height:500px;
+				margin-right:1%;
+			}
+			.container{
+				width:100%;
+			}
+			#container{
+				width:100%;
+			}
+		</style>
 		<script src="js/jquery.js"></script>
 		<script src="js/engine.js"></script>
+		<script>
+			var lisProperties = 
+				[
+					"background",
+					"width",
+					"height",
+					"border",
+					"margin",
+					"padding"
+				]
+			var editProp = 
+					function(e){
+						e.preventDefault();
+						loadProperties();
+					};
+			var loadProperties = 
+					function(object){
+						var listPropInfo = $("<div>");
+						for(var i=0;i<lisProperties.length;i++){
+							$(listPropInfo).append($("<div style='border:1px solid black;width:45%;margin:1%;float:left'>"+lisProperties[i]+"</div>"));
+							$(listPropInfo).append($("<div style='border:1px solid black;width:45%;margin:1%;float:left'>"+$(object).css(lisProperties[i])===undefined?"":$(object).css(lisProperties[i])+"</div>"));
+						}
+						$("#propertiesSection").html(listPropInfo);						
+					};
+			$(document).ready(function(e){
+					$("#editSection *").click(editProp);
+			});
+		</script>
 	</head>
 	<body>
 		<!-- Antara hardcode atau load dari web service-->
 		<div id="header"></div>
-		<div id="container"></div>
+		<div id="container">
+			<h1>Widget Workspace</h1>
+			<div class="container">
+				<div id="toolbar">
+					<button>></button>
+				</div>
+				<div id="workspace">
+					<div id="listWidget"></div>
+					<div id="editSection" dropzone>
+						<button draggable="true">button</button><br>
+						<div style="border:1px solid black;width:10px;height:10px"></div>
+					</div>
+					<div id="propertiesSection">
+						properties
+					</div>
+				</div>
+			</div>
+		</div>
 		<div id="footer"></div>
 	</body>
 </html>
