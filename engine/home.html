@@ -6,6 +6,7 @@
 			div{
 				border:1px solid black;
 				float:left;
+				padding:1px;
 			}
 			#toolbar{
 				width:100%;
@@ -19,15 +20,25 @@
 				height:500px;
 				margin-right:1%;
 			}
-			#editSection{
+			#editBorder{
 				width:50%;
 				height:500px;
 				margin-right:1%;
+			}
+			#editSection{
+				border:none;
+				width:100%;
+				height:500px;
 			}
 			#propertiesSection{
 				width:20%;
 				height:500px;
 				margin-right:1%;
+			}
+			#propertiesSection>div{
+				width:100%;
+				height:100%;
+				position:absolute;
 			}
 			.container{
 				width:100%;
@@ -39,6 +50,7 @@
 		<script src="js/jquery.js"></script>
 		<script src="js/engine.js"></script>
 		<script>
+			/* Properties - global variable*/
 			var lisProperties = 
 				[
 					"background",
@@ -48,23 +60,68 @@
 					"margin",
 					"padding"
 				]
+			var startPointerLeft = 0;
+			var startPointerTop = 0;			
+			/* End Properties */
+			/* Method - global function */
+			var dropHandler =
+					function(e){
+						var tempElement = $(".dragItem").clone();
+						$(tempElement).css({
+							position:"absolute",
+							top:e.originalEvent.clientY+document.body.scrollTop-startPointerTop,
+							left:e.originalEvent.clientX+document.body.scrollLeft-startPointerLeft,
+						});
+						$(tempElement).click(editProp);
+						$(tempElement).mousedown(editElementMouseDown).mousemove(editElementMouseMove).mouseup(editElementMouseUp);
+						$(this).append(tempElement);
+						$(".dragItem").removeClass("dragItem");
+						e.preventDefault();
+					};
+			var editElementMouseDown = 
+					function(e){
+					}
+			var editElementMouseMove = 
+					function(e){
+					}
+			var editElementMouseUp = 
+					function(e){
+					}
 			var editProp = 
 					function(e){
 						e.preventDefault();
-						loadProperties();
+						loadProperties(this);
 					};
 			var loadProperties = 
 					function(object){
+						console.log(object);
 						var listPropInfo = $("<div>");
 						for(var i=0;i<lisProperties.length;i++){
 							$(listPropInfo).append($("<div style='border:1px solid black;width:45%;margin:1%;float:left'>"+lisProperties[i]+"</div>"));
-							$(listPropInfo).append($("<div style='border:1px solid black;width:45%;margin:1%;float:left'>"+$(object).css(lisProperties[i])===undefined?"":$(object).css(lisProperties[i])+"</div>"));
+							$(listPropInfo).append($("<div style='border:1px solid black;width:45%;margin:1%;float:left'>"+($(object).css(lisProperties[i])=='undefined'?"":$(object).css(lisProperties[i]))+"</div>"));
 						}
 						$("#propertiesSection").html(listPropInfo);						
 					};
+			var normalWidgetDragStartHandler = 
+					function(e){
+						$(".dragItem").removeClass("dragItem");
+						$(this).addClass("dragItem");
+						startPointerLeft = e.originalEvent.clientX+document.body.scrollLeft-$(this).offset().left;
+						startPointerTop = e.originalEvent.clientY+document.body.scrollTop-$(this).offset().top;
+						console.log(startPointerLeft+","+startPointerTop);
+					}
+			/* End Method*/
+			/* setting by jQuery */
 			$(document).ready(function(e){
+					$("#listWidget,#editSection").on("dragover",function(e){
+						e.preventDefault();
+					});
+					$("#editSection").on("drop",dropHandler);
+					$("#listWidget *").attr("draggable",true);
+					$("#listWidget *").on("dragstart",normalWidgetDragStartHandler);
 					$("#editSection *").click(editProp);
 			});
+			/* End Setting */
 		</script>
 	</head>
 	<body>
@@ -77,13 +134,17 @@
 					<button>></button>
 				</div>
 				<div id="workspace">
-					<div id="listWidget"></div>
-					<div id="editSection" dropzone>
-						<button draggable="true">button</button><br>
+					<div id="listWidget">
+						<button>button</button><br>
 						<div style="border:1px solid black;width:10px;height:10px"></div>
 					</div>
+					<div id="editBorder">					
+						<div id="editSection">
+						</div>
+					</div>
 					<div id="propertiesSection">
-						properties
+						<div id="propertiesInfo"></div>
+						<div id="eventInfo"></div>
 					</div>
 				</div>
 			</div>
