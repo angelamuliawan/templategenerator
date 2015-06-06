@@ -1,0 +1,49 @@
+<style>
+			div{
+				border:1px solid black;
+				float:left;
+				padding:1px;
+			}
+			#toolbar{
+				width:100%;
+				text-align:center;
+			}
+			#workspace{
+				width:100%;
+			}
+			#listWidget{
+				width:20%;
+				height:500px;
+				margin-right:1%;
+			}
+			#editBorder{
+				width:50%;
+				height:500px;
+				margin-right:1%;
+			}
+			#editSection{
+				border:none;
+				width:100%;
+				height:500px;
+			}
+			#propertiesSection{
+				width:20%;
+				height:500px;
+				margin-right:1%;
+			}
+			#propertiesSection>div{
+				width:100%;
+				height:100%;
+				position:absolute;
+			}
+			.container{
+				width:100%;
+			}
+			#container{
+				width:100%;
+			}
+			body {
+			    padding-top: 70px;
+			    padding-bottom: 30px;
+			}
+		</style>
