@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+	<head manifest="templateGenerator.appcache">
+		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+		<link href="bootstrap/css/custom.css" rel="stylesheet"> 
+		<!-- Bootstrap CSS -->
+    	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    	<!-- Bootstrap theme -->
+    	<link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+		<script src="js/jquery.js"></script>
+	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) version 1.11.2 -->
+	    <script src="bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/engine.js"></script>
+		<script>
+			/* Properties - global variable*/
+			var lisProperties = 
+				[
+					"background",
+					"width",
+					"height",
+					"border",
+					"margin",
+					"padding"
+				];
+			var startPointerLeft = 0;
+			var startPointerTop = 0;
+			var startDragWidgetLeft = 0;
+			var startDragWidgetTop = 0;
+			var dragElement = null;
+			var tempTop = 0;
+			var tempLeft = 0;
+			
+			/* End Properties */
+			/* Method - global function */
+			var dropHandler =
+					function(e){
+						var tempElement = $(".dragItem").clone().addClass("widgetElement");
+						$(tempElement).css({
+							position:"absolute",
+							top:e.originalEvent.clientY+document.body.scrollTop-startPointerTop,
+							left:e.originalEvent.clientX+document.body.scrollLeft-startPointerLeft,
+						});
+						$(tempElement).click(editProp);
+						$(this).append(tempElement);
+						$(".dragItem").removeClass("dragItem");
+						e.preventDefault();
+					};
+			var editElementMouseDown = 
+					function(e){
+						if($(e.target).hasClass("widgetElement")){
+							dragElement = e.target;
+							startDragWidgetLeft = e.originalEvent.clientX+document.body.scrollLeft-$(this).offset().left;
+							startDragWidgetTop = e.originalEvent.clientY+document.body.scrollTop-$(this).offset().top;
+						}
+					}
+			var editElementMouseMove = 
+					function(e){
+						if(dragElement){
+							tempTop = e.originalEvent.clientY;
+							tempLeft = e.originalEvent.clientX;
+							$(dragElement).offset({
+								top:tempTop,
+								left:tempLeft
+							})
+						}
+					}
+			var editElementMouseUp = 
+					function(e){
+						dragElement = null;
+					}
+			var editProp = 
+					function(e){
+						e.preventDefault();
+						loadProperties(this);
+					};
+			var loadProperties = 
+					function(object){
+						console.log(object);
+						var listPropInfo = $("<div>");
+						for(var i=0;i<lisProperties.length;i++){
+							$(listPropInfo).append($("<div style='border:1px solid black;width:45%;margin:1%;float:left'>"+lisProperties[i]+"</div>"));
+							$(listPropInfo).append($("<div style='border:1px solid black;margin:1%;width:45%;float:left;word-wrap:break-word;'>"+($(object).css(lisProperties[i])=='undefined'?"":$(object).css(lisProperties[i]))+"</div>"));
+						}
+						$("#propertiesSection").html(listPropInfo);						
+					};
+			var normalWidgetDragStartHandler = 
+					function(e){
+						$(".dragItem").removeClass("dragItem");
+						$(this).addClass("dragItem");
+						startPointerLeft = e.originalEvent.clientX+document.body.scrollLeft-$(this).offset().left;
+						startPointerTop = e.originalEvent.clientY+document.body.scrollTop-$(this).offset().top;
+					}
+			/* End Method*/
+			/* setting by jQuery */
+			$(document).ready(function(e){
+					/*$(tempElement).mousedown(editElementMouseDown);
+					$('#editSection').mousemove(editElementMouseMove);*/
+					$('body').mousedown(editElementMouseDown).mousemove(editElementMouseMove).mouseup(editElementMouseUp);
+					$("#listWidget,#editSection").on("dragover",function(e){
+						e.preventDefault();
+					});
+					$("#editSection").on("drop",dropHandler);
+					$("#listWidget *").attr("draggable",true);
+					$("#listWidget *").on("dragstart",normalWidgetDragStartHandler);
+					$("#editSection *").click(editProp);
+			});
+			/* End Setting */
+		</script>
+	</head>
+	<body role="document">
+	    <!-- Fixed navbar -->
+		    <nav class="navbar-fixed-top blog-masthead">
+		      <div class="container">
+		        <div class="navbar-header">
+		        <!-- Insert Logo Here -->
+		          	<a class="navbar-brand" href="#">Template Generator Logo</a>
+		        </div>
+		        <nav class="blog-nav">
+		          <a class="blog-nav-item active" href="#">Home</a>
+		          <a class="blog-nav-item" href="#">Website Example</a>
+		          <a class="blog-nav-item" href="#">Package Information</a>
+		          <a class="blog-nav-item" href="#">Forum</a>
+		          <a class="blog-nav-item" href="#">About Us</a>
+		          <a class="blog-nav-item" href="#">Contact Us</a>
+		          <a class="blog-nav-item" style="float:right!important;cursor:pointer;" data-toggle="modal" data-target="#loginModal">Login | Register</a>
+		        </nav>
+		      </div>
+		    </nav>
+		<!-- End of Fixed Navbar -->
+		<div class="container theme-showcase" role="main">
+			<div class="page-header">
+        		<h1 style="color:#0066cc">Widget Workspace</h1>
+      		</div>
+      		<div class="row">
+      			<div id="listWidget" class="col-sm-2" style="border:1px solid;">
+					<button>button</button><br>
+					<div style="border:1px solid black;width:100px;height:20px">drag me !!!!</div>
+				</div>
+				<div class="col-sm-9" style="border:1px solid;">
+					<div id="toolbar">
+						<button>></button>
+					</div>
+					<div style="clear:both"></div>
+					<div class="row">
+						<div class="col-sm-9" style="border:1px solid;">
+							<div id="workspace">
+								<div id="editBorder">					
+									<div id="editSection">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="propertiesSection" class="col-sm-3" style="border:1px solid;">
+							<!--<div id="propertiesInfo"></div>
+							<div id="eventInfo"></div>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<!-- End of container -->
+		<!-- Footer -->
+		<footer class="bs-docs-footer" role="contentinfo">
+  			<div class="container">
+  				<p> Copyright &copy 2015 </p>
+				<p>Designed and built with all the love in the world by Nicholas Gani, Brian Alexandro & Angela Muliawan </p>
+			</div>
+		</footer>
+		<!-- End Of Footer -->
+	</body>
+</html>

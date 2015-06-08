@@ -1,18 +1,8 @@
-<style>
-	div{
-		border:1px solid black;
-		float:left;
-		padding:1px;
-	}
+<style>	
 	#toolbar{
-		width:100%;
 		text-align:center;
 	}
-	#workspace{
-		width:100%;
-	}
 	#listWidget{
-		width:20%;
 		height:500px;
 		margin-right:1%;
 	}
@@ -27,9 +17,10 @@
 		height:500px;
 	}
 	#propertiesSection{
-		width:20%;
+		width:23%;
 		height:500px;
 		margin-right:1%;
+		margin-left:5px;
 	}
 	#propertiesSection>div{
 		width:100%;
