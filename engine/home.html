@@ -36,8 +36,8 @@
 				margin-right:1%;
 			}
 			#propertiesSection>div{
-				width:100%;
-				height:100%;
+				width:inherit;
+				height:500px;
 				position:absolute;
 			}
 			.container{
@@ -59,33 +59,52 @@
 					"border",
 					"margin",
 					"padding"
-				]
+				];
 			var startPointerLeft = 0;
-			var startPointerTop = 0;			
+			var startPointerTop = 0;
+			var startDragWidgetLeft = 0;
+			var startDragWidgetTop = 0;
+			var dragElement = null;
+			var tempTop = 0;
+			var tempLeft = 0;
+			
 			/* End Properties */
 			/* Method - global function */
 			var dropHandler =
 					function(e){
-						var tempElement = $(".dragItem").clone();
+						var tempElement = $(".dragItem").clone().addClass("widgetElement");
 						$(tempElement).css({
 							position:"absolute",
 							top:e.originalEvent.clientY+document.body.scrollTop-startPointerTop,
 							left:e.originalEvent.clientX+document.body.scrollLeft-startPointerLeft,
 						});
 						$(tempElement).click(editProp);
-						$(tempElement).mousedown(editElementMouseDown).mousemove(editElementMouseMove).mouseup(editElementMouseUp);
 						$(this).append(tempElement);
 						$(".dragItem").removeClass("dragItem");
 						e.preventDefault();
 					};
 			var editElementMouseDown = 
 					function(e){
+						if($(e.target).hasClass("widgetElement")){
+							dragElement = e.target;
+							startDragWidgetLeft = e.originalEvent.clientX+document.body.scrollLeft-$(this).offset().left;
+							startDragWidgetTop = e.originalEvent.clientY+document.body.scrollTop-$(this).offset().top;
+						}
 					}
 			var editElementMouseMove = 
 					function(e){
+						if(dragElement){
+							tempTop = e.originalEvent.clientY;
+							tempLeft = e.originalEvent.clientX;
+							$(dragElement).offset({
+								top:tempTop,
+								left:tempLeft
+							})
+						}
 					}
 			var editElementMouseUp = 
 					function(e){
+						dragElement = null;
 					}
 			var editProp = 
 					function(e){
@@ -98,7 +117,7 @@
 						var listPropInfo = $("<div>");
 						for(var i=0;i<lisProperties.length;i++){
 							$(listPropInfo).append($("<div style='border:1px solid black;width:45%;margin:1%;float:left'>"+lisProperties[i]+"</div>"));
-							$(listPropInfo).append($("<div style='border:1px solid black;width:45%;margin:1%;float:left'>"+($(object).css(lisProperties[i])=='undefined'?"":$(object).css(lisProperties[i]))+"</div>"));
+							$(listPropInfo).append($("<div style='border:1px solid black;margin:1%;width:45%;float:left;word-wrap:break-word;'>"+($(object).css(lisProperties[i])=='undefined'?"":$(object).css(lisProperties[i]))+"</div>"));
 						}
 						$("#propertiesSection").html(listPropInfo);						
 					};
@@ -108,11 +127,13 @@
 						$(this).addClass("dragItem");
 						startPointerLeft = e.originalEvent.clientX+document.body.scrollLeft-$(this).offset().left;
 						startPointerTop = e.originalEvent.clientY+document.body.scrollTop-$(this).offset().top;
-						console.log(startPointerLeft+","+startPointerTop);
 					}
 			/* End Method*/
 			/* setting by jQuery */
 			$(document).ready(function(e){
+					/*$(tempElement).mousedown(editElementMouseDown);
+					$('#editSection').mousemove(editElementMouseMove);*/
+					$('body').mousedown(editElementMouseDown).mousemove(editElementMouseMove).mouseup(editElementMouseUp);
 					$("#listWidget,#editSection").on("dragover",function(e){
 						e.preventDefault();
 					});
@@ -136,7 +157,7 @@
 				<div id="workspace">
 					<div id="listWidget">
 						<button>button</button><br>
-						<div style="border:1px solid black;width:10px;height:10px"></div>
+						<div style="border:1px solid black;width:100px;height:20px">drag me !!!!</div>
 					</div>
 					<div id="editBorder">					
 						<div id="editSection">
