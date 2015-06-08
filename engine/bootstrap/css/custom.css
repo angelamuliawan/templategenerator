@@ -49,6 +49,11 @@
   		margin-top: 7px;
   	}
 
+  	.col-lg-2 img{
+		margin-left: 25px;
+  		margin-top: 15px;
+  	}
+
 	/* Footer */
 	.bs-docs-footer {
 	  padding-top: 40px;
