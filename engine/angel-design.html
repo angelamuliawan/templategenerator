@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 	<head manifest="templateGenerator.appcache">
-		<meta charset="utf-8">
+		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 		<link href="bootstrap/css/custom.css" rel="stylesheet"> 
 		<!-- Bootstrap CSS -->
     	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -16,6 +16,7 @@
 	    <script src="bootstrap/js/bootstrap.min.js"></script>
 		<script src="js/engine.js"></script>
 		<script src="js/custom.js"></script>
+		<script src="js/home.js"></script>
 	</head>
 	<body role="document">
 	    <!-- Fixed navbar -->
@@ -32,7 +33,7 @@
 		          <a class="blog-nav-item" href="#">Forum</a>
 		          <a class="blog-nav-item" href="#">About Us</a>
 		          <a class="blog-nav-item" href="#">Contact Us</a>
-		          <a class="blog-nav-item" style="float:right!important;" href="#">Login | Register</a>
+		          <a class="blog-nav-item" style="float:right!important;cursor:pointer;" data-toggle="modal" data-target="#loginModal">Login | Register</a>
 		        </nav>
 		      </div>
 		    </nav>
@@ -52,7 +53,7 @@
 			          <img class="first-slide" src="images/bg1.jpeg" alt="First slide">
 			          <div class="container">
 			            <div class="carousel-caption">
-			              <h1 style="color:#0022cc">The Easiest Way To Build Your Professional Website</h1>
+			              <h1 style="color:#0066cc">The Easiest Way To Build Your Professional Website</h1>
 			              <!--<p></p>-->
 			            </div>
 			          </div>
@@ -61,8 +62,8 @@
 			          <img class="second-slide" src="images/bg2.jpg" alt="Second slide">
 			          <div class="container">
 			            <div class="carousel-caption">
-			              <h1 style="color:#0022cc">Try Your Free Website Now!</h1>
-			              <p><button class="btn btn-primary">Register</button></p>
+			              <h1 style="color:#0066cc">Try Your Free Website Now!</h1>
+			              <p><button class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Register</button></p>
 			            </div>
 			          </div>
 			        </div>
@@ -128,7 +129,7 @@
 			<!-- END OF ADVANTAGES -->
 			<!-- Start of What Will You Have -->
 			<div class="page-header">
-        		<h1 style="color:#0022cc">What Will You Have?</h1>
+        		<h1 style="color:#0066cc">What Will You Have?</h1>
       		</div>
       		<div class="row">
 		        <div class="col-lg-6">
@@ -155,10 +156,11 @@
    			<!-- End of What Will You Have -->
    			<!-- Start of Pricing -->
 			<div class="page-header">
-        		<h1 style="color:#0022cc">How Much?</h1>
+        		<h1 style="color:#0066cc">How Much?</h1>
       		</div>
       		<!-- End of Pricing -->
-		</div> <!-- end of container -->
+		</div> 
+		<!-- end of container -->
 		<!-- Footer -->
 		<footer class="bs-docs-footer" role="contentinfo">
   			<div class="container">
@@ -166,5 +168,55 @@
 				<p>Designed and built with all the love in the world by Nicholas Gani, Brian Alexandro & Angela Muliawan </p>
 			</div>
 		</footer>
+		<!-- End Of Footer -->
+		<!-- Start Of Modal -->
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      	<div class="modal-header" style="background-color:#0066CC;">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="modalLabel" style="color:#FFFFCC;">Login | Register</h4>
+			        <p style="color:#FFFFCC;">Input email and password to start managing your website.</p>
+		      	</div>
+			      <div class="modal-body">
+			        <form class="loginForm">
+			          <div class="form-group">
+			            <label for="login-email" class="control-label">Email:</label>
+			            <input type="text" class="form-control" id="txtLoginEmail">
+			          </div>
+			          <div class="form-group">
+			            <label for="login-password" class="control-label">Password:</label>
+			            <input type="password" class="form-control" id="txtLoginPassword">
+			          </div>
+			          <p> Forgot Password? <span> <a href="#">Click Here</a> </span></p>
+			        </form>
+			      <div class="modal-footer loginForm">
+			        <button type="button" class="btn btn-primary">Login</button>
+			        <p> New Member? Please <span> <a href="#" id="btnRegisterNewMember">Register</a> </span></p>
+			      </div>
+			        <form class="registerForm" style="display:none;">
+			          <div class="form-group">
+			            <label for="register-email" class="control-label">Email:</label>
+			            <input type="text" class="form-control" id="txtRegisterEmail">
+			          </div>
+			          <div class="form-group">
+			            <label for="register-password" class="control-label">Password:</label>
+			            <input type="password" class="form-control" id="txtRegisterPassword">
+			          </div>
+			          <div class="form-group">
+			            <label for="register-confirm-password" class="control-label">Confirm Password:</label>
+			            <input type="password" class="form-control" id="txtRegisterConfirmPassword">
+			          </div>
+			        </form>
+			      </div>
+			      <div class="modal-footer registerForm" style="display:none;">
+			        <button type="button" class="btn btn-primary">Register</button>
+			        <p> Already have an account? Please <span> <a href="#" id="btnBackToLogin">Login</a> </span></p>
+			      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- End Of Modal -->
+
 	</body>
 </html>

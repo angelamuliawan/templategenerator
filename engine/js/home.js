@@ -1,0 +1,12 @@
+$(document).ready(function(){
+	$("#btnRegisterNewMember").click(function(){
+		$(".loginForm").fadeOut(function(){
+			$(".registerForm").fadeIn();
+		});
+	})
+	$("#btnBackToLogin").click(function(){
+		$(".registerForm").fadeOut(function(){
+			$(".loginForm").fadeIn();
+		});
+	})
+});
