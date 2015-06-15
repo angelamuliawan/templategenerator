@@ -1,4 +1,8 @@
 <style>	
+	.marketing .col-lg-4 {
+	  margin-bottom: 20px;
+	  text-align: center;
+	}
 	#toolbar{
 		text-align:center;
 	}
