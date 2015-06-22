@@ -3,6 +3,16 @@
 	  margin-bottom: 20px;
 	  text-align: center;
 	}
+
+
+	.notification {
+		 background:transparent url('../../images/icon-website/icon-notification.png');
+		 background-size: cover;
+	}
+
+	.notification:hover {
+	   background-image: url('../../images/icon-website/icon-notification-hover.png');
+	}
 	/* Featurettes
 ------------------------- */
 
