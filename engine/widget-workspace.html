@@ -7,9 +7,13 @@
     	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     	<!-- Bootstrap theme -->
     	<link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    	<link href="spinner/jquery.bootstrap-touchspin.min.css" rel="stylesheet">
+    	<link href="color-picker/css/bootstrap-colorpicker.css" rel="stylesheet">
 		<script src="js/jquery.js"></script>
 	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) version 1.11.2 -->
 	    <script src="bootstrap/js/bootstrap.min.js"></script>
+	    <script src="spinner/jquery.bootstrap-touchspin.min.js"></script>
+	    <script src="color-picker/js/bootstrap-colorpicker.js"></script>
 		<script src="js/engine.js"></script>
 		<script src="js/widget-workspace.js"></script>
 	</head>
@@ -77,12 +81,12 @@
 										</thead>
 										<tbody id="bodyProperty">
 											<tr>
-												<td>Id</td>
-												<td><input type="text" class="form-control" id="txtId"/></td>
+												<td>Identity</td>
+												<td><input type="text" class="form-control" id="idValue"/></td>
 											</tr>
 											<tr>
 												<td>Class</td>
-												<td><input type="text" class="form-control" id="txtClass"/></td>
+												<td><input type="text" class="form-control" id="classValue"/></td>
 											</tr>
 										</tbody>
 									</table>
@@ -118,5 +122,19 @@
 			</div>
 		</footer>
 		<!-- End Of Footer -->
+		<div class="templateContainer" style="display:none">
+			<div id="changeValTemplate0">
+				<input class="changedVal" />
+			</div>
+			<div id="changeValTemplate1">
+				<div class="changedVal demo demo-auto inl-bl" data-container="true" data-color="rgb(50,216,62)" data-inline="true"></div>
+			</div>
+			<div id="changeValTemplate2">
+				<select class="changedVal"></select>
+			</div>
+			<div id="changeValTemplate3">
+				<input class="changedVal" />
+			</div>
+		</div>
 	</body>
 </html>

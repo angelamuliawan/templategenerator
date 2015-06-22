@@ -1,14 +1,53 @@
 /* Properties - global variable*/
 var cursorMode = 0;
 dragElement = null;
+// 0=numerik, 1=color, 2=ddl(option), 3=other(text)
 var listProperties = 
 	[
-		"background",
-		"width",
-		"height",
-		"border",
-		"margin",
-		"padding"
+		{
+			name:"background-color",
+			valueType:1
+		},{
+			name:"color",
+			valueType:1
+		},{
+			name:"background-position",
+			valueType:3
+		},{
+			name:"background-size",
+			valueType:3
+		},{
+			name:"background-repeat",
+			valueType:2,
+			data:[]
+		},{
+			name:"width",
+			valueType:0,
+			data:"px"
+		},{
+			name:"height",
+			valueType:0,
+			data:"px"
+		},{
+			name:"border-size",
+			valueType:0,
+			data:"px"
+		},{
+			name:"border-color",
+			valueType:1
+		},{
+			name:"border-style",
+			valueType:2,
+			data:["solid",'ridge']
+		},{
+			name:"margin",
+			valueType:0,
+			data:"px"
+		},{
+			name:"padding",
+			valueType:0,
+			data:"px"
+		}
 	];
 var listEvents = 
 	[
@@ -29,11 +68,69 @@ var startDragWidgetLeft = 0;
 var startDragWidgetRight = 0;
 var startDragWidgetBottom = 0;
 var startDragWidgetTop = 0;
+selectedElement = null;
 var tempTop = 0;
 var tempLeft = 0;
+var WIDGETELEMENTCLASS = "widgetElement";
 
 /* End Properties */
 /* Method - global function */
+var changeColorPickerHandler = 
+		function(e){
+			console.log()
+		}
+var changePropertiesHandler = 
+		function(e){
+			$(this).addClass("syncVal");
+			var popupTop = $(this).offset().top;
+			var popupLeft = $("#propertiesSection").offset().left + $("#propertiesSection").width();
+			var propertiesIndex = $(this).attr("data-index");
+			var divPopup = $("#changeValTemplate"+listProperties[propertiesIndex].valueType).clone().attr("id","popupValue");
+			$(divPopup).offset({
+				top:popupTop,
+				left:popupLeft
+			}).css({
+				height:$(this).height()+"px",
+				'margin-left':"0.5%",
+				position:"absolute",
+				"width":(screen.width-popupLeft-2*screen.width/100)+"px"
+			})
+			$("body").append(divPopup);
+			switch(listProperties[propertiesIndex].valueType){
+				case 0:
+					$(".changedVal",divPopup).TouchSpin({
+						min:-10000,
+						max:10000,
+						boostat: 5,
+						postfix:listProperties[propertiesIndex].data,
+						initval:$(this).text().replace(listProperties[propertiesIndex].data,"")
+					})
+				break;
+				case 1:
+					$(".changedVal",divPopup).colorpicker({
+						format:"rgba",
+						color:$(this).text()
+					}).on('changeColor.colorpicker', function(e){
+						var rgbVal = e.color.toRGB();
+						$(".syncVal").text("rgba("+rgbVal.r+","+rgbVal.g+","+rgbVal.b+","+rgbVal.a+")");
+						$(selectedElement).css($(".syncVal").attr("id").replace("Value",""),$(".syncVal").text());
+					});
+				break;
+				case 2:
+					$(listProperties[propertiesIndex].data).each(function(){
+						$(".changedVal",divPopup).append($("<option value='"+this+"'>"+this+"</option>"));
+					})
+					$(".changedVal",divPopup).val($(".syncVal").text()).change(function(){
+						$(".syncVal").text($(this).val());
+						$(selectedElement).css($(".syncVal").attr("id").replace("Value",""),$(".syncVal").text());
+					})
+				break;
+			}
+		}
+var changedPropVal = 
+		function(e){
+			$(".syncVal").text($(this).val());
+		};
 var dragElementStart = 
 		function(e){
 			e.preventDefault();
@@ -140,7 +237,7 @@ var dropHandler =
 		};
 var eachListProperties = 
 		function(i){
-			$("#bodyProperty").append($("<tr><td>"+this+"</td><td class='editValue' id='"+this+"Value'></td></tr>"))
+			$("#bodyProperty").append($("<tr><td>"+this.name+"</td><td class='editValue' id='"+this.name+"Value' data-index='"+i+"'></td></tr>"))
 		}
 var eachListEvent = 
 		function(i){
@@ -149,21 +246,34 @@ var eachListEvent =
 var editProp = 
 		function(e){
 			e.preventDefault();
+			selectedElement = this;
 			loadProperties(this);
+			$(".editValue").click(changePropertiesHandler);
 		};
 var globalMouseUp = 
 		function(e){
 			dragElement = null;
 			$(".draggedElement").removeClass("draggedElement");
 		}
+var globalMouseDown = 
+		function(e){		
+			var container = $("#popupValue,.syncVal");
+
+			if (!container.is(e.target) // if the target of the click isn't the container...
+				&& container.has(e.target).length === 0) // ... nor a descendant of the container
+			{
+				$("#popupValue").remove();
+				$(".syncVal").removeClass("syncVal");
+			}
+		}
 var loadProperties = 
 		function(object){
-			var listPropInfo = $("<div>");
-			for(var i=0;i<lisProperties.length;i++){
-				$(listPropInfo).append($("<div style='border:1px solid black;width:45%;margin:1%;float:left'>"+lisProperties[i]+"</div>"));
-				$(listPropInfo).append($("<div style='border:1px solid black;margin:1%;width:45%;float:left;word-wrap:break-word;'>"+($(object).css(lisProperties[i])=='undefined'?"":$(object).css(lisProperties[i]))+"</div>"));
-			}
-			$("#propertiesSection").html(listPropInfo);						
+			$("#classValue").val($(object).attr("class").replace(WIDGETELEMENTCLASS," "));
+			$("#idValue").val($(object).attr("id"));
+			for(var i=0;i<listProperties.length;i++){
+				console.log(listProperties[i]);
+				$("#"+listProperties[i].name+"Value").text($(object).css(listProperties[i].name));
+			}			
 		};
 var normalWidgetDragStartHandler = 
 		function(e){
@@ -216,6 +326,7 @@ $(document).ready(function(e){
 		$("#listWidget *").attr("draggable",true);
 		$("#listWidget *").on("dragstart",normalWidgetDragStartHandler);
 		$("#editSection *").click(editProp);
+		$(document).mousedown(globalMouseDown);
 		$(listProperties).each(eachListProperties);
 		$(listEvents).each(eachListEvent);
 });
