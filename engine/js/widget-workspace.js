@@ -50,6 +50,10 @@ var listProperties =
 			data:"px"
 		}
 	];
+var listSpecialProperties = [];
+var listInitFunction = {
+	"img":function(){}
+};
 var listEvents = 
 	[
 		"background",
