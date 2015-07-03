@@ -50,9 +50,13 @@ var listProperties =
 			data:"px"
 		}
 	];
-var listSpecialProperties = [];
+//attribut khusus tag2 tertentu misal label ada attribut for, input ada attribut disabled
+var listSpecialProperties = {};
+
 var listInitFunction = {
-	"img":function(){}
+	"img":function(){
+		alert("request image");
+	}
 };
 var listEvents = 
 	[
@@ -273,6 +277,11 @@ var dropHandler =
 			});
 			$(container).prepend(widgetCover);
 			$(".dragItem").removeClass("dragItem");
+			//panggil fungsi init
+			var elementType = $(tempElement).prop("tagName");
+			if(typeof listInitFunction[elementType] != "undefined"){
+				listInitFunction[elementType]();
+			}
 			e.preventDefault();
 		};
 var eachListProperties = 
@@ -296,8 +305,8 @@ var globalMouseUp =
 			$(".draggedElement").removeClass("draggedElement");
 		}
 var globalMouseDown = 
-		function(e){		
-			var container = $("#popupValue,.syncVal");
+		function(e){
+			var container = $("#popupValue,.syncVal");// selector yang ingin dipertahankan
 
 			if (!container.is(e.target) // if the target of the click isn't the container...
 				&& container.has(e.target).length === 0) // ... nor a descendant of the container
